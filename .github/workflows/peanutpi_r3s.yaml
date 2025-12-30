@@ -76,19 +76,19 @@ jobs:
           ./scripts/diffconfig.sh
 
       - name: Prepare basic tools
-        run: make tools/tar/compile -j$(nproc) V=sc
+        run: make tools/tar/compile -j$(nproc) BUILD_LOG=1 || ret=$? .github/workflows/scripts/show_build_failures.sh
 
       - name: Download packages
-        run: make download -j$(nproc) V=sc
+        run: make download -j$(nproc) BUILD_LOG=1 || ret=$? .github/workflows/scripts/show_build_failures.sh
 
       - name: Build tools
-        run: make tools/install -j$(nproc) V=sc
+        run: make tools/install -j$(nproc) BUILD_LOG=1 || ret=$? .github/workflows/scripts/show_build_failures.sh
 
       - name: Build toolchain
-        run: make toolchain/install -j$(nproc) V=sc
+        run: make toolchain/install -j$(nproc) BUILD_LOG=1 || ret=$? .github/workflows/scripts/show_build_failures.sh
 
       - name: Build OpenWrt
-        run: make -j$(nproc) V=sc
+        run: make -j$(nproc) BUILD_LOG=1 || ret=$? .github/workflows/scripts/show_build_failures.sh
 
       - name: Package output
         run: tar -cvf r3s-images.tar bin/targets/mediatek/filogic
